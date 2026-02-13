@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DCPay — Waitlist</title>
+    <meta
+      name="description"
+      content="DCPay helps businesses accept crypto by verifying payments across multiple RPC providers and resolving discrepancies with consensus."
+    />
+    <style>
+      :root {
+        --bg: #f3f5f8;
+        --surface: #ffffff;
+        --surface-soft: #f4f6f9;
+        --text: #1d2430;
+        --muted: #5e6b7f;
+        --line: #d6dde7;
+        --accent: #9aa7ba;
+        --accent-2: #7f8da4;
+        --ok: #2d8a61;
+        --bad: #b14f5f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI,
+          Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      body {
+        position: relative;
+        background-image: radial-gradient(
+          circle at 18% -5%,
+          #e3e8f0 0%,
+          #f3f5f8 50%
+        );
+        background-repeat: no-repeat;
+        overflow-x: hidden;
+      }
+
+      .wrap {
+        width: min(1120px, 92vw);
+        margin: 0 auto;
+      }
+
+      .hero {
+        min-height: 92vh;
+        display: grid;
+        align-items: center;
+        padding: 48px 0 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-content {
+        width: 100%;
+        max-width: 760px;
+      }
+
+      .pill {
+        display: inline-block;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 6px 10px;
+        margin-bottom: 16px;
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 17ch;
+        font-size: clamp(34px, 7vw, 78px);
+        line-height: 1.04;
+        letter-spacing: -0.02em;
+      }
+
+      .sub {
+        margin-top: 18px;
+        max-width: 58ch;
+        color: var(--muted);
+        font-size: clamp(16px, 2vw, 20px);
+        line-height: 1.55;
+      }
+
+      .scroll-note {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 12px;
+        color: #7b8798;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .hero-meta {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .tag {
+        font-size: 12px;
+        color: #4f5d72;
+        border: 1px solid var(--line);
+        background: #f8fafc;
+        border-radius: 999px;
+        padding: 6px 10px;
+      }
+
+      .gh-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: #2a3545;
+        text-decoration: none;
+        border: 1px solid var(--line);
+        background: #ffffff;
+        border-radius: 999px;
+        padding: 6px 11px;
+      }
+
+      .gh-link:hover {
+        background: #f4f7fb;
+      }
+
+      .bg-network {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.28;
+      }
+
+      .bg-network svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .net-line {
+        stroke: #a8b5c8;
+        stroke-width: 1.4;
+        stroke-linecap: round;
+        stroke-dasharray: 4 6;
+        animation: flow 10s linear infinite;
+      }
+
+      .net-node {
+        fill: #fdfefe;
+        stroke: #8f9eb3;
+        stroke-width: 1.4;
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+
+      .net-node.n1 {
+        animation: floatA 11s ease-in-out infinite alternate;
+      }
+
+      .net-node.n2 {
+        animation: floatB 13s ease-in-out infinite alternate;
+      }
+
+      .net-node.n3 {
+        animation: floatC 12s ease-in-out infinite alternate;
+      }
+
+      .net-node.n4 {
+        animation: floatA 14s ease-in-out infinite alternate-reverse;
+      }
+
+      .net-node.n5 {
+        animation: floatB 10s ease-in-out infinite alternate-reverse;
+      }
+
+      .net-node.n6 {
+        animation: floatC 15s ease-in-out infinite alternate;
+      }
+
+      .net-core {
+        fill: #dce3ee;
+        stroke: #7f8da4;
+        stroke-width: 1.8;
+      }
+
+      .net-packet {
+        fill: #7387a5;
+      }
+
+      .net-halo {
+        fill: none;
+        stroke: #90a0b6;
+        stroke-width: 1.2;
+        opacity: 0.65;
+        animation: halo 2.8s ease-out infinite;
+        transform-origin: center;
+      }
+
+      @keyframes flow {
+        from {
+          stroke-dashoffset: 0;
+        }
+        to {
+          stroke-dashoffset: -120;
+        }
+      }
+
+      @keyframes halo {
+        0% {
+          transform: scale(0.8);
+          opacity: 0.55;
+        }
+        100% {
+          transform: scale(1.38);
+          opacity: 0;
+        }
+      }
+
+      @keyframes floatA {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(5px, -7px);
+        }
+      }
+
+      @keyframes floatB {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(-6px, 6px);
+        }
+      }
+
+      @keyframes floatC {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(4px, 5px);
+        }
+      }
+
+      .panel {
+        min-height: 72vh;
+        display: grid;
+        align-items: center;
+        padding: 34px 0;
+        border-top: 1px solid rgba(128, 143, 164, 0.24);
+        position: relative;
+        z-index: 1;
+      }
+
+      .panel-inner {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 26px;
+        background: linear-gradient(165deg, var(--surface) 0%, #f7f9fc 100%);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: clamp(24px, 4vw, 46px);
+        box-shadow: 0 14px 40px rgba(88, 102, 124, 0.08);
+      }
+
+      @media (min-width: 920px) {
+        .panel-inner {
+          grid-template-columns: 1fr 1.1fr;
+          gap: 40px;
+        }
+      }
+
+      .label {
+        font-size: 12px;
+        color: #7c889a;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin: 10px 0 0;
+        font-size: clamp(28px, 4.2vw, 48px);
+        line-height: 1.08;
+        letter-spacing: -0.015em;
+      }
+
+      .items {
+        display: grid;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .items li {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface-soft);
+        color: #334155;
+        padding: 12px 14px;
+      }
+
+      .items strong {
+        color: #18202c;
+      }
+
+      .waitlist .panel-inner {
+        grid-template-columns: 1fr;
+      }
+
+      form {
+        margin-top: 8px;
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      input[type='email'] {
+        flex: 1 1 300px;
+        min-height: 50px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: #ffffff;
+        color: var(--text);
+        padding: 0 14px;
+        font-size: 15px;
+        outline: none;
+      }
+
+      input[type='email']:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(121, 169, 255, 0.16);
+      }
+
+      button {
+        min-height: 50px;
+        border: none;
+        border-radius: 12px;
+        padding: 0 18px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #ffffff;
+        cursor: pointer;
+        background: linear-gradient(125deg, var(--accent), var(--accent-2));
+      }
+
+      button:disabled {
+        opacity: 0.72;
+        cursor: not-allowed;
+      }
+
+      .status {
+        min-height: 24px;
+        margin-top: 12px;
+        font-size: 14px;
+      }
+
+      .ok {
+        color: var(--ok);
+      }
+
+      .bad {
+        color: var(--bad);
+      }
+
+      .tiny {
+        margin-top: 8px;
+        color: #6d7a8f;
+        font-size: 12px;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition: opacity 620ms ease, transform 620ms ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-network" aria-hidden="true">
+      <svg viewBox="0 0 1440 900" preserveAspectRatio="none">
+        <line class="net-line" x1="160" y1="180" x2="700" y2="430" />
+        <line class="net-line" x1="1240" y1="210" x2="700" y2="430" />
+        <line class="net-line" x1="220" y1="740" x2="700" y2="430" />
+        <line class="net-line" x1="1220" y1="710" x2="700" y2="430" />
+        <line class="net-line" x1="460" y1="120" x2="700" y2="430" />
+        <line class="net-line" x1="980" y1="120" x2="700" y2="430" />
+        <line class="net-line" x1="160" y1="180" x2="460" y2="120" />
+        <line class="net-line" x1="980" y1="120" x2="1240" y2="210" />
+        <line class="net-line" x1="220" y1="740" x2="1220" y2="710" />
+        <line class="net-line" x1="160" y1="180" x2="220" y2="740" />
+        <line class="net-line" x1="1240" y1="210" x2="1220" y2="710" />
+
+        <circle class="net-node n1" cx="160" cy="180" r="18" />
+        <circle class="net-node n2" cx="1240" cy="210" r="18" />
+        <circle class="net-node n3" cx="220" cy="740" r="18" />
+        <circle class="net-node n4" cx="1220" cy="710" r="18" />
+        <circle class="net-node n5" cx="460" cy="120" r="16" />
+        <circle class="net-node n6" cx="980" cy="120" r="16" />
+
+        <circle class="net-halo" cx="700" cy="430" r="32" />
+        <circle class="net-core" cx="700" cy="430" r="24" />
+
+        <circle class="net-packet" r="5">
+          <animateMotion dur="4.1s" repeatCount="indefinite" path="M160 180 L700 430" />
+        </circle>
+        <circle class="net-packet" r="5">
+          <animateMotion dur="3.8s" repeatCount="indefinite" path="M1240 210 L700 430" />
+        </circle>
+        <circle class="net-packet" r="5">
+          <animateMotion dur="4.3s" repeatCount="indefinite" path="M220 740 L700 430" />
+        </circle>
+        <circle class="net-packet" r="5">
+          <animateMotion dur="4s" repeatCount="indefinite" path="M1220 710 L700 430" />
+        </circle>
+
+        <!-- node-to-node coordination traffic -->
+        <circle class="net-packet" r="4.4">
+          <animateMotion dur="5.1s" repeatCount="indefinite" path="M160 180 L460 120" />
+        </circle>
+        <circle class="net-packet" r="4.4">
+          <animateMotion dur="5.4s" repeatCount="indefinite" path="M460 120 L160 180" />
+        </circle>
+        <circle class="net-packet" r="4.4">
+          <animateMotion dur="5.2s" repeatCount="indefinite" path="M980 120 L1240 210" />
+        </circle>
+        <circle class="net-packet" r="4.4">
+          <animateMotion dur="5.5s" repeatCount="indefinite" path="M1240 210 L980 120" />
+        </circle>
+        <circle class="net-packet" r="4.4">
+          <animateMotion dur="7s" repeatCount="indefinite" path="M220 740 L1220 710" />
+        </circle>
+        <circle class="net-packet" r="4.4">
+          <animateMotion dur="7.3s" repeatCount="indefinite" path="M1220 710 L220 740" />
+        </circle>
+      </svg>
+    </div>
+
+    <header class="hero wrap reveal">
+      <div class="hero-content">
+        <div>
+          <span class="pill">DCPay Waitlist</span>
+          <h1>Accept crypto payments without building verification infrastructure.</h1>
+          <p class="sub">
+            DCPay tells you if a payment is truly confirmed — even when providers
+            disagree — so your team can move faster and avoid costly payment
+            mistakes.
+          </p>
+          <div class="hero-meta">
+            <span class="tag">Open source • Free • Self-hosted</span>
+            <a
+              class="gh-link"
+              href="https://github.com/LinkTrue/dcpay-DEMO"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View DCPay on GitHub"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.12.82-.26.82-.58 0-.28-.02-1.24-.02-2.24-3.34.72-4.04-1.42-4.04-1.42-.54-1.4-1.34-1.76-1.34-1.76-1.1-.74.08-.72.08-.72 1.2.08 1.84 1.24 1.84 1.24 1.08 1.82 2.8 1.3 3.5 1 .1-.78.42-1.3.76-1.6-2.66-.3-5.46-1.32-5.46-5.86 0-1.3.46-2.36 1.22-3.2-.12-.3-.54-1.54.12-3.18 0 0 1-.32 3.3 1.22a11.5 11.5 0 0 1 6 0c2.3-1.54 3.3-1.22 3.3-1.22.66 1.64.24 2.88.12 3.18.76.84 1.22 1.9 1.22 3.2 0 4.56-2.8 5.56-5.48 5.86.44.38.82 1.1.82 2.24 0 1.62-.02 2.92-.02 3.32 0 .32.22.7.82.58A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/>
+              </svg>
+              GitHub
+            </a>
+          </div>
+          <div class="scroll-note">Scroll ↓</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="panel wrap reveal" aria-labelledby="pain-heading">
+      <div class="panel-inner">
+        <div>
+          <div class="label">Pain</div>
+          <h2 id="pain-heading">What problem DCPay solves</h2>
+        </div>
+        <ul class="items">
+          <li><strong>Single-provider risk</strong> when one RPC is wrong, delayed, or unavailable.</li>
+          <li><strong>Conflicting status</strong> when different providers report different outcomes.</li>
+          <li><strong>Manual reconciliation load</strong> on ops, support, and compliance teams.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel wrap reveal" aria-labelledby="how-heading">
+      <div class="panel-inner">
+        <div>
+          <div class="label">How</div>
+          <h2 id="how-heading">How DCPay works</h2>
+        </div>
+        <ul class="items">
+          <li>Checks the same payment across <strong>multiple RPC providers</strong>.</li>
+          <li>When stakes are high and results differ, runs <strong>consensus</strong> on the correct state.</li>
+          <li>Returns one trusted outcome via <strong>API/webhooks</strong>, with audit-ready logs.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel wrap reveal" aria-labelledby="who-heading">
+      <div class="panel-inner">
+        <div>
+          <div class="label">Fit</div>
+          <h2 id="who-heading">Who can use it</h2>
+        </div>
+        <ul class="items">
+          <li>Payment processors, exchanges, and fintech infrastructure teams.</li>
+          <li>E-commerce and SaaS businesses accepting crypto directly.</li>
+          <li>DAO and treasury operators that need reliable settlement records.</li>
+          <li>Audit and compliance teams validating on-chain outcomes.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel waitlist wrap reveal" aria-labelledby="waitlist-heading">
+      <div class="panel-inner">
+        <div>
+          <div class="label">Access</div>
+          <h2 id="waitlist-heading">Join the waitlist</h2>
+          <p class="sub" style="margin-top: 10px; max-width: 52ch">
+            Register your email. We will only contact you for access and product
+            availability update.
+          </p>
+          <form id="waitlist-form" novalidate>
+            <div class="row">
+              <input
+                id="email"
+                type="email"
+                placeholder="name@company.com"
+                autocomplete="email"
+                required
+                aria-label="Email address"
+              />
+              <button id="submit-btn" type="submit">Join waitlist</button>
+            </div>
+            <div id="status" class="status" role="status" aria-live="polite"></div>
+            <div class="tiny">No Spam! only product launch update, once!</div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const form = document.getElementById('waitlist-form');
+      const emailInput = document.getElementById('email');
+      const statusNode = document.getElementById('status');
+      const submitBtn = document.getElementById('submit-btn');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const email = emailInput.value.trim();
+
+        if (!emailRegex.test(email)) {
+          statusNode.className = 'status bad';
+          statusNode.textContent = 'Please enter a valid email address.';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        statusNode.className = 'status';
+        statusNode.textContent = 'Submitting...';
+
+        try {
+          const response = await fetch('https://ntfy.sh/dcpay', {
+            method: 'POST',
+            body: email,
+          });
+
+          if (!response.ok) throw new Error('Request failed');
+
+          statusNode.className = 'status ok';
+          statusNode.textContent =
+            'Submission received. You have been added to the waitlist.';
+          form.reset();
+        } catch (error) {
+          statusNode.className = 'status bad';
+          statusNode.innerHTML =
+            'Unable to submit from this browser. Try: <code>curl -d "' +
+            email.replace(/"/g, '') +
+            '" ntfy.sh/dcpay</code>';
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+
+      const revealNodes = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.18 }
+      );
+
+      revealNodes.forEach((node) => observer.observe(node));
+    </script>
+  </body>
+</html>
